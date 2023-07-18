@@ -55,23 +55,28 @@ class DocumentUploadView(generics.CreateAPIView):
         # serializer.save(owner=self.request.user, format=extension)
 
     def create(self, request, *args, **kwargs):
-        valid_file_type = ['.pdf', '.jpg', '.jpeg', '.png', '.gif']
+        valid_file_type = ['.pdf', '.jpg', '.jpeg', '.png', '.gif', '.doc', '.docx']
         if request.data.get('file'):
             name, extension = os.path.splitext(self.request.data.get('file').name)
             if extension in valid_file_type:
-                serializer = DocumentSerializer(data=request.data, context={'request': request})
-                if serializer.is_valid():
-                    print('aaaaaa')
-                    serializer.save(owner=self.request.user, format=extension)
-                    return response.Response(serializer.data)
-                else:
-                    print(serializer.errors)
+                filesize = request.data.get('file').size
+                if filesize > 5242880:
                     return response.Response({
-                        "error": "Invalid data"
+                        "error": "You cannot upload file more than 5Mb"
                     })
+                else:
+                    serializer = DocumentSerializer(data=request.data, context={'request': request})
+                    if serializer.is_valid():
+                        serializer.save(owner=self.request.user, format=extension)
+                        return response.Response(serializer.data)
+                    else:
+                        print(serializer.errors)
+                        return response.Response({
+                            "error": "Invalid data"
+                        })
             else:
                 return response.Response({
-                    "error": "Invalid file type"
+                    "error": "Invalid file type. File must be pdf, jpg, jpeg, png, gif, doc, docx"
                 })
 
 
