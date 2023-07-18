@@ -6,6 +6,8 @@ from rest_framework import permissions
 from .permissions import IsOwnerOrShared, UpdateOwn
 from django.http import HttpResponse
 import os
+import datetime
+from django.db.models import Q
 
 
 class DocumentViewSets(viewsets.ModelViewSet):
@@ -27,10 +29,17 @@ class DocumentViewSets(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         qs = None
+        search = request.query_params.get('search', '')
+        date_search = request.query_params.get('date_search', '')
         if request.user.is_superuser:
             qs = self.queryset.all()
         elif request.user:
             qs = self.queryset.filter(owner=request.user)
+        qs = qs.filter(Q(title__icontains=search) | Q(description__icontains=search) |
+                       Q(format__icontains=search))
+        if date_search:
+            print(date_search)
+            qs = qs.filter(Q(upload_date__exact=date_search))
         serializer = self.serializer_class(qs, many=True)
         return response.Response(serializer.data)
 
@@ -52,7 +61,7 @@ class DocumentUploadView(generics.CreateAPIView):
     #                 "error": "Invalid file type"
     #             })
     #         print(name, extension)
-        # serializer.save(owner=self.request.user, format=extension)
+    # serializer.save(owner=self.request.user, format=extension)
 
     def create(self, request, *args, **kwargs):
         valid_file_type = ['.pdf', '.jpg', '.jpeg', '.png', '.gif', '.doc', '.docx']
@@ -67,7 +76,7 @@ class DocumentUploadView(generics.CreateAPIView):
                 else:
                     serializer = DocumentSerializer(data=request.data, context={'request': request})
                     if serializer.is_valid():
-                        serializer.save(owner=self.request.user, format=extension)
+                        serializer.save(owner=self.request.user, format=extension, upload_date=datetime.datetime.now().date())
                         return response.Response(serializer.data)
                     else:
                         print(serializer.errors)
@@ -104,7 +113,3 @@ class DocumentShareView(generics.UpdateAPIView):
         instance.shared_with.set(shared_with)
         serializer = self.get_serializer(instance)
         return response.Response(serializer.data)
-
-
-
-
