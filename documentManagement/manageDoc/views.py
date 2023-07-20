@@ -8,9 +8,13 @@ from django.http import HttpResponse
 import os
 import datetime
 from django.db.models import Q
+from rest_framework.mixins import ListModelMixin, DestroyModelMixin
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 
 
 class DocumentViewSets(viewsets.ModelViewSet):
+    """ API Group of Document get, post, put, patch and delete with permission """
     permission_classes = [IsOwnerOrShared]
     queryset = Document.objects.all()
     serializer_class = DocumentSerializer
@@ -21,6 +25,8 @@ class DocumentViewSets(viewsets.ModelViewSet):
         return super(DocumentViewSets, self).get_permissions()
 
     def create(self, request, *args, **kwargs):
+        """ post title, description, Upload a file on specific type and size (pdf, jpeg, png, doc, docx) and size not more
+                                      then 5mb  """
         data = request.data
         valid_file_type = ['.pdf', '.jpg', '.jpeg', '.png', '.gif', '.doc', '.docx']
         if data.get('file'):
@@ -34,7 +40,8 @@ class DocumentViewSets(viewsets.ModelViewSet):
                 else:
                     serializer = DocumentSerializer(data=request.data, context={'request': request})
                     if serializer.is_valid():
-                        serializer.save(owner=self.request.user, format=extension, upload_date=datetime.datetime.now().date())
+                        serializer.save(owner=self.request.user, format=extension,
+                                        upload_date=datetime.datetime.now().date())
                         return response.Response(serializer.data)
                     else:
                         print(serializer.errors)
@@ -62,6 +69,8 @@ class DocumentViewSets(viewsets.ModelViewSet):
         #     return response.Response(serializer.data)
 
     def list(self, request, *args, **kwargs):
+        """ List of all documents created by the user and search using title, description, format and upload date with
+            permissions """
         qs = None
         search = request.query_params.get('search', '')
         date_search = request.query_params.get('date_search', '')
@@ -79,6 +88,8 @@ class DocumentViewSets(viewsets.ModelViewSet):
 
 
 class DocumentUploadView(generics.CreateAPIView):
+    """ Upload a file on specific type and size (pdf, jpeg, png, doc, docx) and size not more
+                              then 5mb  """
     queryset = Document.objects.all()
     serializer_class = DocumentSerializer
     permission_classes = [IsOwnerOrShared]
@@ -110,7 +121,8 @@ class DocumentUploadView(generics.CreateAPIView):
                 else:
                     serializer = DocumentSerializer(data=request.data, context={'request': request})
                     if serializer.is_valid():
-                        serializer.save(owner=self.request.user, format=extension, upload_date=datetime.datetime.now().date())
+                        serializer.save(owner=self.request.user, format=extension,
+                                        upload_date=datetime.datetime.now().date())
                         return response.Response(serializer.data)
                     else:
                         print(serializer.errors)
@@ -124,6 +136,7 @@ class DocumentUploadView(generics.CreateAPIView):
 
 
 class DocumentDownloadView(generics.RetrieveAPIView):
+    """ Download document with various permissions (download himself, shared persons and admin) """
     queryset = Document.objects.all()
     serializer_class = DocumentSerializer
     permission_classes = [IsOwnerOrShared]
@@ -137,6 +150,7 @@ class DocumentDownloadView(generics.RetrieveAPIView):
 
 
 class DocumentShareView(generics.UpdateAPIView):
+    """ Share document with another user """
     queryset = Document.objects.all()
     serializer_class = DocumentSerializer
     permission_classes = [UpdateOwn]
@@ -150,19 +164,42 @@ class DocumentShareView(generics.UpdateAPIView):
 
 
 class DocumentVersionListCreateView(generics.ListCreateAPIView):
+
     queryset = DocumentVersion.objects.all()
     serializer_class = DocumentVersionSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    @swagger_auto_schema(
+        # methods=['GET'],
+        operation_description="Post a docx file to convert pdf",
+
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            required=['file'],
+            title="Post object",
+            properties={
+                'file': openapi.Schema(type=openapi.TYPE_FILE),
+            },
+        ),
+        responses={200: 'success'}
+    )
     def post(self, request, *args, **kwargs):
         serializer = DocumentVersionSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
-            # return response.Response(serializer.data, status=status.HTTP_201_CREATED)
+            return response.Response(serializer.data, status=status.HTTP_201_CREATED)
         return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request, *args, **kwargs):
+        """ Get All Conversion file for a user versioning """
+        if request.user:
+            qs = self.queryset.filter(owner=request.user)
+            serializer = self.serializer_class(qs, many=True, context={'request': request})
+            return response.Response(serializer.data)
 
 
 class ConvertedDocumentDownloadView(generics.RetrieveAPIView):
+    """ Download Conversion file for a user versioning """
     queryset = DocumentVersion.objects.all()
     serializer_class = DocumentVersionSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -173,3 +210,18 @@ class ConvertedDocumentDownloadView(generics.RetrieveAPIView):
         response = HttpResponse(file, content_type='application/octet-stream')
         response['Content-Disposition'] = 'attachment; filename=' + file.name
         return response
+
+
+@swagger_auto_schema(responses={200: DocumentVersionSerializer(many=True)})
+class UserConvertDocumentsViewSets(viewsets.GenericViewSet, ListModelMixin, DestroyModelMixin):
+    """ Delete Conversion file for a user versioning """
+    queryset = DocumentVersion.objects.all()
+    serializer_class = DocumentVersionSerializer
+    permission_classes = [UpdateOwn]
+
+    def list(self, request, *args, **kwargs):
+        """ Get All Conversion file for a user versioning """
+        if request.user:
+            qs = self.queryset.filter(owner=request.user)
+            serializer = self.serializer_class(qs, many=True, context={'request': request})
+            return response.Response(serializer.data)

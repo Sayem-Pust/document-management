@@ -1,10 +1,11 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import DocumentViewSets, DocumentUploadView, DocumentDownloadView,\
-    DocumentShareView, DocumentVersionListCreateView, ConvertedDocumentDownloadView
+    DocumentShareView, DocumentVersionListCreateView, ConvertedDocumentDownloadView, UserConvertDocumentsViewSets
 
 router = DefaultRouter()
 router.register('documents', DocumentViewSets, basename='documents')
+router.register('convert-doc', UserConvertDocumentsViewSets, basename='convert-doc')
 
 urlpatterns = [
     path("", include(router.urls)),

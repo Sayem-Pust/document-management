@@ -7,12 +7,15 @@ from rest_framework import status, response
 
 
 class RegistrationView(generics.CreateAPIView):
+    """ User Registration with username, email, first name, last name, password, confirm password and
+     is superuser(optional) on the top of django build in authentication system """
     queryset = User.objects.all()
     permission_classes = (permissions.AllowAny,)
     serializer_class = RegistrationSerializer
 
 
 class LoginView(generics.CreateAPIView):
+    """ User Login with username or email and password and get a access token for authentication"""
     queryset = User.objects.filter(is_active=True)
 
     def post(self, request):
