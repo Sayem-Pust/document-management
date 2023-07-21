@@ -5,6 +5,12 @@
 4. run pip install -r requirements.txt
 5. run project python manage.py runserver
 
+## If you are using docker, then follow these steps
+1. clone projects
+2. cd documentManagement(project name)
+3. run docker-compose build
+4. run docker-compose up
+
 ## task 1 .User Authentication and Authorization
 
 description: In user Authentication, i used django build in auth system when is_superuser(build in) can manage all the documents
