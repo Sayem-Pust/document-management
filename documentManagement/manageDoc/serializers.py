@@ -55,7 +55,7 @@ class DocumentSerializer(serializers.ModelSerializer):
                   'owner', 'shared_with', 'created_at', 'updated_at']
         read_only_fields = ['id', 'owner', 'created_at', 'updated_at']
 
-    def update(self, instance, validated_data):
-        shared_with = validated_data.pop('shared_with', [])
-        instance.shared_with.set(shared_with)
-        return super().update(instance, validated_data)
+    # def update(self, instance, validated_data):
+    #     shared_with = validated_data.pop('shared_with', [])
+    #     instance.shared_with.set(shared_with)
+    #     return super().update(instance, validated_data)

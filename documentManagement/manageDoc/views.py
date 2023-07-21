@@ -86,6 +86,49 @@ class DocumentViewSets(viewsets.ModelViewSet):
         serializer = self.serializer_class(qs, many=True)
         return response.Response(serializer.data)
 
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        print(partial)
+        instance = self.get_object()
+        print('sss', instance.shared_with.all())
+        shared = instance.shared_with.all()
+        data = request.data
+        valid_file_type = ['.pdf', '.jpg', '.jpeg', '.png', '.gif', '.doc', '.docx']
+        if data.get('file'):
+            name, extension = os.path.splitext(data.get('file').name)
+            if extension in valid_file_type:
+                filesize = request.data.get('file').size
+                if filesize > 5242880:
+                    return response.Response({
+                        "error": "You cannot upload file more than 5Mb"
+                    })
+                else:
+                    serializer = self.get_serializer(instance, data=request.data, partial=partial, context={'request': request})
+                    if serializer.is_valid():
+                        serializer.save(owner=self.request.user, format=extension,
+                                        upload_date=datetime.datetime.now().date(), shared_with=shared)
+                        return response.Response(serializer.data)
+                    else:
+                        print(serializer.errors)
+                        return response.Response({
+                            "error": "Invalid data"
+                        })
+            else:
+                return response.Response({
+                    "error": "Invalid file type. File must be pdf, jpg, jpeg, png, gif, doc, docx"
+                })
+        else:
+            serializer = self.get_serializer(instance, data=request.data, partial=partial, context={'request': request})
+            if serializer.is_valid():
+                serializer.save(owner=self.request.user)
+                return response.Response(serializer.data)
+            else:
+                print(serializer.errors)
+                return response.Response({
+                    "error": "Invalid data"
+                })
+
+
 
 class DocumentUploadView(generics.CreateAPIView):
     """ Upload a file on specific type and size (pdf, jpeg, png, doc, docx) and size not more
@@ -164,7 +207,6 @@ class DocumentShareView(generics.UpdateAPIView):
 
 
 class DocumentVersionListCreateView(generics.ListCreateAPIView):
-
     queryset = DocumentVersion.objects.all()
     serializer_class = DocumentVersionSerializer
     permission_classes = [permissions.IsAuthenticated]

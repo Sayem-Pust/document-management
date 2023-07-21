@@ -1,0 +1,683 @@
+{
+	"info": {
+		"_postman_id": "8523df87-4bec-48c6-a43d-627cd2dd2e63",
+		"name": "document management",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10702064"
+	},
+	"item": [
+		{
+			"name": "Registration",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "sayem2",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "sayem2@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "first_name",
+							"value": "md.",
+							"type": "text"
+						},
+						{
+							"key": "last_name",
+							"value": "sayem2",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Ss@12345",
+							"type": "text"
+						},
+						{
+							"key": "confirm_password",
+							"value": "Ss@12345",
+							"type": "text"
+						},
+						{
+							"key": "is_superuser",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/registration/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"registration",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "identifier",
+							"value": "sayem",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Ss@12345",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/login/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Documents list",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkyMjA1Mjg0LCJpYXQiOjE2ODk2MTMyODQsImp0aSI6ImQ1N2ZiNTM2OGNjYjQ3OTBhZGQ4ODhkNzVjNmFmNGQ1IiwidXNlcl9pZCI6NX0.NrWfS90kA0Xo7h-m1jiPB0cstmkVJQlKpf-ZswwjZsM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/documents/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"documents",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Documents create",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkyNTAzNDI3LCJpYXQiOjE2ODk5MTE0MjcsImp0aSI6IjNkNDZmYTU5MzFlZjRmMmE4ZmVkNjQ3MDBmYzg0YTg3IiwidXNlcl9pZCI6NX0.XpyNpSISEI6pkjFXP4mykfMTk3RTy57zmKhyvbXa_z0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/User/Downloads/invoice (6).pdf",
+							"disabled": true
+						},
+						{
+							"key": "upload_date",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "format",
+							"value": ".pdf",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "title",
+							"value": "title5",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "description5",
+							"type": "text"
+						},
+						{
+							"key": "shared_with",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "shared_with",
+							"value": "2",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/documents/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"documents",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Document update",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkyNTAzNDI3LCJpYXQiOjE2ODk5MTE0MjcsImp0aSI6IjNkNDZmYTU5MzFlZjRmMmE4ZmVkNjQ3MDBmYzg0YTg3IiwidXNlcl9pZCI6NX0.XpyNpSISEI6pkjFXP4mykfMTk3RTy57zmKhyvbXa_z0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "title",
+							"value": "title4",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/User/Downloads/invoice (1).pdf",
+							"disabled": true
+						},
+						{
+							"key": "shared_with",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "shared_with",
+							"value": "2",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/documents/16/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"documents",
+						"16",
+						""
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Document delete",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkyMzY2MTkxLCJpYXQiOjE2ODk3NzQxOTEsImp0aSI6Ijc3MmI5ZDVhM2E4YzRhZTM4NmQyMmMxZmRhMDYxNjI1IiwidXNlcl9pZCI6MX0.G1-0XywVzdLVHV0Xbr8gJrOj2IGeHWmZueFO7jKEKlA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/documents/14/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"documents",
+						"14",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Document details",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkyMjQ0MzkwLCJpYXQiOjE2ODk2NTIzOTAsImp0aSI6IjBjZTJlYTE2OTFiZTQ2NmU4MWFlY2Y3YjQ2Njg2NTA3IiwidXNlcl9pZCI6MX0.U_T47vJx6uogY5X7K_ZOsRObsQjBCPVL_tNgim9Yglc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/documents/1/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"documents",
+						"1",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Document only upload",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkyMjQ2MTAwLCJpYXQiOjE2ODk2NTQxMDAsImp0aSI6ImU5M2VhMDFlMDIxNzQzYWE4MWQxZWY1NGM4MzUyOTgzIiwidXNlcl9pZCI6NX0.IN8Vqn3lexPAHabX4WFcf3y7KQudGEYdOWO6QElf5-A",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/User/Downloads/Group 2678.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/upload/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"upload",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Document only download",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkyNTA0NjIwLCJpYXQiOjE2ODk5MTI2MjAsImp0aSI6IjJiNWJmY2ZlOWUyMDRjM2RiMzcwNGJiODFkYTcxN2I1IiwidXNlcl9pZCI6Mn0.POjdo0FNe01Mp2kNnS6MIYPWUyENyd5F5cmduBwsJjU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/download/16/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"download",
+						"16",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Document Share",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkyMjUyMTEyLCJpYXQiOjE2ODk2NjAxMTIsImp0aSI6ImEwMjMwMTM2ZjkwNTQ4ZDViMjZjYjQ4OTI3Y2FlMDJmIiwidXNlcl9pZCI6NX0.b8qWExtY6BjGtirINlGZlfDMyY4R5Y7lOS5kvpXJE80",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "shared_with",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "shared_with",
+							"value": "2",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/share/16/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"share",
+						"16",
+						""
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Document convert from docx to pdf",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkyMzY2MTkxLCJpYXQiOjE2ODk3NzQxOTEsImp0aSI6Ijc3MmI5ZDVhM2E4YzRhZTM4NmQyMmMxZmRhMDYxNjI1IiwidXNlcl9pZCI6MX0.G1-0XywVzdLVHV0Xbr8gJrOj2IGeHWmZueFO7jKEKlA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/User/Downloads/test.docx"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/convert/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"convert",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Converted pdf download",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkyMzY2MTkxLCJpYXQiOjE2ODk3NzQxOTEsImp0aSI6Ijc3MmI5ZDVhM2E4YzRhZTM4NmQyMmMxZmRhMDYxNjI1IiwidXNlcl9pZCI6MX0.G1-0XywVzdLVHV0Xbr8gJrOj2IGeHWmZueFO7jKEKlA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/convert/download/14/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"convert",
+						"download",
+						"14",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Convert file version",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkyNDE4MjQ0LCJpYXQiOjE2ODk4MjYyNDQsImp0aSI6Ijk1NmM2ZDJmZjQ2ZjRkY2FhZmRhYzhhNDBjNGI0ODRjIiwidXNlcl9pZCI6MX0.3SDvaWkIXyhZAKTX88WGRE4vMSNzah8iioApcfm2nh0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/convert-doc/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"convert-doc",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Convert file version delete",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkyNDE4MjQ0LCJpYXQiOjE2ODk4MjYyNDQsImp0aSI6Ijk1NmM2ZDJmZjQ2ZjRkY2FhZmRhYzhhNDBjNGI0ODRjIiwidXNlcl9pZCI6MX0.3SDvaWkIXyhZAKTX88WGRE4vMSNzah8iioApcfm2nh0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/convert-doc/14/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"convert-doc",
+						"14",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
